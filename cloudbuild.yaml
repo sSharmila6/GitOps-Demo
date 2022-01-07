@@ -91,7 +91,7 @@ steps:
       fi
 # [END tf-apply]      
 
-# [START tf-destroy]
+/*# [START tf-destroy]
 - id: 'tf destroy'
   name: 'hashicorp/terraform:1.0.0'
   entrypoint: 'sh'
@@ -106,4 +106,4 @@ steps:
         echo "Branch '$BRANCH_NAME' does not represent an oficial environment."
         echo "*******************************************************************************"
       fi
-# [END tf-destroy]    
+# [END tf-destroy]*/    
