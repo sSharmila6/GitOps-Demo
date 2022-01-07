@@ -67,10 +67,10 @@ resource "kubernetes_replication_controller" "nginx" {
                     memory = "512Mi"
                 }
 
-                requests {
+                /*requests {
                     cpu    = "250m"
                     memory = "50Mi"
-                }
+                }*/
             }
         }       
       }
