@@ -27,6 +27,6 @@ variable "network_name" {
 
 variable "project" {
   type        = string
-  default ="engaged-builder-331710"
+  default ="digital-maker-333106"
   
 }
