@@ -15,7 +15,7 @@
 
 terraform {
   backend "gcs" {
-    bucket = "nk1"
+    bucket = "nk2"
     prefix = "env/dev"
   }
 }
