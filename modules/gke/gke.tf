@@ -76,4 +76,4 @@ resource "kubernetes_service" "nginx" {
       }
     }
   }
-test}*/
+}*/
