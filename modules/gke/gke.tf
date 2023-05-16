@@ -1,6 +1,6 @@
-resource "kubernetes_namespace" "staging" {
+resource "kubernetes_namespace" "staging1" {
   metadata {
-    name = "staging"
+    name = "staging1"
   }
 }
 
