@@ -1,0 +1,106 @@
+pipeline:
+  name: CD Pipeline
+  identifier: CD_Pipeline
+  projectIdentifier: agroCDGitOps
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: Deploy
+        identifier: Deploy
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: Kubernetes
+          service:
+            serviceRef: Agro_service
+          environment:
+            environmentRef: Dev
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: IAC_CD
+          execution:
+            steps:
+              - step:
+                  name: Rollout Deployment
+                  identifier: rolloutDeployment
+                  type: K8sRollingDeploy
+                  timeout: 10m
+                  spec:
+                    skipDryRun: false
+                    pruningEnabled: false
+              - step:
+                  type: ShellScriptProvision
+                  name: ShellScriptProvision_1
+                  identifier: ShellScriptProvision_1
+                  spec:
+                    source:
+                      type: Inline
+                      spec:
+                        script: echo "How are you"
+                    environmentVariables: []
+                  timeout: 10m
+            rollbackSteps:
+              - step:
+                  name: Rollback Rollout Deployment
+                  identifier: rollbackRolloutDeployment
+                  type: K8sRollingRollback
+                  timeout: 10m
+                  spec:
+                    pruningEnabled: false
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback
+    - stage:
+        name: Approvals
+        identifier: Approvals
+        description: ""
+        type: Approval
+        spec:
+          execution:
+            steps:
+              - step:
+                  name: approvals
+                  identifier: approvals
+                  type: HarnessApproval
+                  timeout: 1d
+                  spec:
+                    approvalMessage: |-
+                      Please review the following information
+                      and approve the pipeline progression
+                    includePipelineExecutionHistory: true
+                    approvers:
+                      minimumCount: 1
+                      disallowPipelineExecutor: false
+                      userGroups:
+                        - _project_all_users
+                    isAutoRejectEnabled: false
+                    approverInputs: []
+        tags: {}
+    - stage:
+        name: test
+        identifier: test
+        description: ""
+        type: Custom
+        spec:
+          execution:
+            steps:
+              - step:
+                  type: ShellScript
+                  name: ShellScript_1
+                  identifier: ShellScript_1
+                  spec:
+                    shell: Bash
+                    onDelegate: true
+                    source:
+                      type: Inline
+                      spec:
+                        script: ls
+                    environmentVariables: []
+                    outputVariables: []
+                  timeout: 10m
+        tags: {}
